@@ -15,7 +15,8 @@ public class RadiationReadingConverter {
     dto.setId(radiationReading.getId());
     dto.setLatitude(radiationReading.getLatitude());
     dto.setLongitude(radiationReading.getLongitude());
-    dto.setTimestamp(radiationReading.getTimestamp());
+    dto.setSievert(radiationReading.getSievert());
+    dto.setCreated(radiationReading.getCreated());
     return dto;
   }
 

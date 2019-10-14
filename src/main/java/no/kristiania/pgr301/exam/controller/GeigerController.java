@@ -14,14 +14,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/devices", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/devices")
 public class GeigerController {
 
   private final GeigerCounterRepository geigerCounterRepository;
@@ -29,13 +28,10 @@ public class GeigerController {
   private final GeigerCounterConverter geigerCounterConverter;
   private final RadiationReadingConverter radiationReadingConverter;
 
-  @PostMapping(value = "/")
+  @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity createGeigerCounter(
       @RequestParam(required = false) String deviceName,
       @RequestParam(required = false) String deviceType) {
-
-    // TODO: 14.10.2019
-    //  Move to service class
 
     GeigerCounter entity = new GeigerCounter();
     entity.setName(deviceName);
@@ -58,18 +54,21 @@ public class GeigerController {
     return ResponseEntity.ok(dto);
   }
 
-  @GetMapping("/")
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity getAllDevices() {
-    List<GeigerCounter> all = geigerCounterRepository.findAll();
-    return ResponseEntity.ok(all);
+    List<GeigerCounter> geigerCounters = geigerCounterRepository.findAll();
+    return ResponseEntity.ok(geigerCounterConverter.createFromEntities(geigerCounters));
   }
 
-  @PostMapping(value = "/{deviceId}/measurements")
+  @PostMapping(value = "/{deviceId}/measurements", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity addRadiationReading(
-      @PathParam("deviceId") Long deviceId, @RequestBody RadiationReadingDto radiationReadingDto) {
+      @PathVariable("deviceId") Long deviceId,
+      @RequestBody RadiationReadingDto radiationReadingDto) {
 
-    // TODO: 14.10.2019
-    //  Move to service class
+    if (deviceId == null) {
+      return ResponseEntity.notFound().build();
+    }
+
     Optional<GeigerCounter> geigerCounter = geigerCounterRepository.findById(deviceId);
 
     if (geigerCounter.isEmpty()) {
@@ -78,15 +77,15 @@ public class GeigerController {
 
     RadiationReading radiationReading =
         radiationReadingConverter.createFromDto(radiationReadingDto);
-    radiationReading.setDeviceId(deviceId);
+    radiationReading.setDevice(geigerCounter.get());
 
     radiationReadingRepository.save(radiationReading);
 
     return ResponseEntity.status(201).build();
   }
 
-  @GetMapping(value = "/{deviceId}/measurements")
-  public ResponseEntity getReadings(@PathParam("deviceId") Long deviceId) {
+  @GetMapping(value = "/{deviceId}/measurements", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity getReadings(@PathVariable("deviceId") Long deviceId) {
 
     Optional<GeigerCounter> geigerCounter = geigerCounterRepository.findById(deviceId);
 
@@ -96,6 +95,6 @@ public class GeigerController {
 
     List<RadiationReading> radiationReadings = geigerCounter.get().getRadiationReadings();
 
-    return ResponseEntity.ok(radiationReadings);
+    return ResponseEntity.ok(radiationReadingConverter.createFromEntities(radiationReadings));
   }
 }

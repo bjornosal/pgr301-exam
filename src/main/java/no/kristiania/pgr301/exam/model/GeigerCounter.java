@@ -27,7 +27,8 @@ public class GeigerCounter implements Serializable {
   @Enumerated(value = EnumType.STRING)
   private DeviceType type;
 
-  @OneToMany private List<RadiationReading> radiationReadings;
+  @OneToMany(mappedBy = "device")
+  private List<RadiationReading> radiationReadings;
 
   @CreationTimestamp private LocalDateTime timestamp;
   @UpdateTimestamp private LocalDateTime lastUpdated;

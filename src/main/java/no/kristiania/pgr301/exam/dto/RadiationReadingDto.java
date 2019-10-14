@@ -13,6 +13,6 @@ public class RadiationReadingDto {
   @NotNull private Double latitude;
   @NotNull private Double longitude;
   @NotNull private Double sievert;
-  @NotNull private LocalDateTime timestamp;
+  @NotNull private LocalDateTime created;
 
 }

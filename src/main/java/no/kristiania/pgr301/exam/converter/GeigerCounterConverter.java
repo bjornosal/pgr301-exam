@@ -8,6 +8,7 @@ import no.kristiania.pgr301.exam.model.RadiationReading;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -42,5 +43,9 @@ public class GeigerCounterConverter {
       geigerCounter.setRadiationReadings(radiationReading);
     }
     return geigerCounter;
+  }
+
+  public List<GeigerCounterDto> createFromEntities(List<GeigerCounter> geigerCounters) {
+    return geigerCounters.stream().map(this::createFromEntity).collect(Collectors.toList());
   }
 }

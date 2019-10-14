@@ -23,10 +23,10 @@ public class RadiationReading implements Serializable {
   private Double longitude;
   private Double sievert;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "device_id", nullable = false)
-  private Long deviceId;
+  private GeigerCounter device;
 
-  @CreationTimestamp private LocalDateTime timestamp;
+  @CreationTimestamp private LocalDateTime created;
   @UpdateTimestamp private LocalDateTime lastUpdated;
 }
