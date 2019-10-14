@@ -5,9 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.kristiania.pgr301.exam.enums.DeviceType;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -24,7 +27,8 @@ public class GeigerCounter implements Serializable {
   @Enumerated(value = EnumType.STRING)
   private DeviceType type;
 
-  private List<Double> radiationReadings;
+  @OneToMany private List<RadiationReading> radiationReadings;
 
-  private List<Location> location;
+  @CreationTimestamp private LocalDateTime timestamp;
+  @UpdateTimestamp private LocalDateTime lastUpdated;
 }

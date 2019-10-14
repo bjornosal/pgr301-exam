@@ -5,6 +5,7 @@ import no.kristiania.pgr301.exam.enums.DeviceType;
 import no.kristiania.pgr301.exam.model.GeigerCounter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
@@ -13,23 +14,24 @@ public class GeigerCounterDto {
   private Long deviceId;
   private String name;
   private DeviceType type;
-  private List<Double> radiationReadings;
-  private List<LocationDto> locationInfo;
+  private List<RadiationReadingDto> radiationReadings;
 
-  public static GeigerCounterDto fromEntity(GeigerCounter geigerCounter) {
+  public static GeigerCounterDto createFromEntity(GeigerCounter geigerCounter) {
     GeigerCounterDto geigerCounterDto = new GeigerCounterDto();
     geigerCounterDto.setDeviceId(geigerCounter.getId());
     geigerCounterDto.setName(geigerCounter.getName());
     geigerCounterDto.setType(geigerCounterDto.getType());
 
-    geigerCounterDto.getRadiationReadings().addAll(geigerCounter.getRadiationReadings());
+    if (geigerCounter.getRadiationReadings() != null) {
 
-    List<LocationDto> locationInfo =
-        geigerCounter.getLocation().stream()
-            .map(LocationDto::fromEntity)
-            .collect(Collectors.toList());
+      List<RadiationReadingDto> radiationReadingDtos =
+          geigerCounter.getRadiationReadings().stream()
+              .filter(Objects::nonNull)
+              .map(RadiationReadingDto::createFromEntity)
+              .collect(Collectors.toList());
+      geigerCounterDto.setRadiationReadings(radiationReadingDtos);
+    }
 
-    geigerCounterDto.setLocationInfo(locationInfo);
     return geigerCounterDto;
   }
 }
