@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 
 @RestController
-@RequestMapping(path = "/api/v1/devices/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/devices", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GeigerController {
 
   private final GeigerRepository repository;
