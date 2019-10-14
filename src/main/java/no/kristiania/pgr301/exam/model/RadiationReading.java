@@ -7,9 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -24,6 +22,11 @@ public class RadiationReading implements Serializable {
   private Double latitude;
   private Double longitude;
   private Double sievert;
+
+  @ManyToOne
+  @JoinColumn(name = "device_id", nullable = false)
+  private Long deviceId;
+
   @CreationTimestamp private LocalDateTime timestamp;
   @UpdateTimestamp private LocalDateTime lastUpdated;
 }
