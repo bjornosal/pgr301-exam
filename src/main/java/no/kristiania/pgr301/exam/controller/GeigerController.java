@@ -2,15 +2,12 @@ package no.kristiania.pgr301.exam.controller;
 
 import no.kristiania.pgr301.exam.enums.DeviceType;
 import no.kristiania.pgr301.exam.feature.GeigerFeatures;
-import no.kristiania.pgr301.exam.model.GeigerCounterModel;
+import no.kristiania.pgr301.exam.model.GeigerCounter;
 import no.kristiania.pgr301.exam.repository.GeigerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
@@ -25,11 +22,11 @@ public class GeigerController {
     this.repository = repository;
   }
 
-  @GetMapping
-  public ResponseEntity<GeigerCounterModel> getGeigerCounter(
+  @PostMapping(value = "/")
+  public ResponseEntity<GeigerCounter> getGeigerCounter(
       @RequestParam(required = false) String deviceName,
       @RequestParam(required = false) String deviceType) {
-    GeigerCounterModel model = new GeigerCounterModel();
+    GeigerCounter model = new GeigerCounter();
 
     if (GeigerFeatures.NAMING_FEATURE.isActive() && deviceName != null) {
       model.setName(deviceName);
