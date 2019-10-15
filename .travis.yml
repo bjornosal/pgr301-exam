@@ -3,6 +3,6 @@ before_install:
 - chmod +x ./mvnw
 deploy:
   provider: heroku
-  app: pgr301-ex-ad652b63-app-ci
+  app: salbjo-pgr301-app-ci
   api_key:
     secure: VjwJAkUpQSlZSCEQooEep58I5scVSJAgpDsXQ3meAjXbXOyFd+pOdxaDSWrS0uDkxftsKY6/J9DCvqQRUFxkyLz1gp1luDsBX8yk/MhpWkKwwvMTcJCyFiJI1Jy1dcCvabxfOdmUAwxJ/DAqCdTbslsUDlIkoygPII0cVE0LvctqusUdDsL97oAmdbQik296tDcYaaFB4WtOGHtqO4zXrxlyVpUvJ89cgZ6yhGgyjRv+gMnnPxxTr2gRVAYcZAWU3bNuWekWhpjo+K2FXHUuYo9ivAJwvvael0rF7uWrI2TkRgdpvZn/VKj/dhXPQoIktk5VzazER9iQdX+E858gLispUy08mUNVn/A1GjnIryTcv7D7cawSBqxcOeG/h7oLNp8bnFXxVYbFHiFbyhfXxiafhZuYwvMNiWOwVK4uoLEKBOWMwF0KR//0gbyjEgDC6KLHKtOLSQ7r980rpAMHb6efFj/rLIR5TDvh3rPeu/CdLP784/nGrhjlaBC78Gi0w4RqU1XhoXp0XatLjh/fLra0VAllAidSqPuly2YenIotUYjU0P2doPYYcWp+U/ZiZWt5BTZ1IzwNE97OZTFOpH/AcC2egUG9x4VmZYa2K8Yw/T23ycR5i2M5o1Wb8cNb6Q/NraXZQb4qGGX8fH/z3iGAxMc13ZpZfBblz4UTgVw=
