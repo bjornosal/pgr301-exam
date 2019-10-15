@@ -1,0 +1,12 @@
+language: java
+
+services:
+  - docker
+
+deploy:
+  # Skip cleanup to get around Docker issue.
+  skip_cleanup: true
+  provider: script
+  script: bash push.sh
+  on:
+    branch: master
