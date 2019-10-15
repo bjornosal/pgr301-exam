@@ -1,12 +1,15 @@
 language: java
 
-services:
-  - docker
+#services:
+ # - docker
 
-deploy:
+before_install:
+  - chmod +x ./mvnw
+
+#deploy:
   # Skip cleanup to get around Docker issue.
-  skip_cleanup: true
-  provider: script
-  script: bash push.sh
-  on:
-    branch: master
+ # skip_cleanup: true
+  #provider: script
+  #script: bash push.sh
+  #on:
+   # branch: master
