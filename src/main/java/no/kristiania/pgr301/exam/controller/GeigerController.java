@@ -51,7 +51,7 @@ public class GeigerController {
     geigerCounterRepository.save(entity);
     GeigerCounterDto dto = geigerCounterConverter.createFromEntity(entity);
 
-    return ResponseEntity.ok(dto);
+    return ResponseEntity.status(201).body(dto);
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
