@@ -64,8 +64,6 @@ public class GeigerControllerTest {
         given().get("/").then().statusCode(200).and().extract().as(GeigerCounterDto[].class);
 
     assertThat(result.length, equalTo(expectedSize));
-
-    Assert.fail();
   }
 
   @Test
