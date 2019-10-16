@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import no.kristiania.pgr301.exam.dto.GeigerCounterDto;
 import no.kristiania.pgr301.exam.dto.RadiationReadingDto;
 import no.kristiania.pgr301.exam.enums.DeviceType;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -62,6 +64,8 @@ public class GeigerControllerTest {
         given().get("/").then().statusCode(200).and().extract().as(GeigerCounterDto[].class);
 
     assertThat(result.length, equalTo(expectedSize));
+
+    Assert.fail();
   }
 
   @Test
