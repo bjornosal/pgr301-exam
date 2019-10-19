@@ -12,11 +12,13 @@
     <artifactId>exam</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>exam</name>
+    <packaging>jar</packaging>
     <description>Exam project for Spring Boot</description>
 
     <properties>
         <java.version>11</java.version>
         <togglz.version>2.6.1.Final</togglz.version>
+        <application.name>GeigerApi</application.name>
     </properties>
 
     <dependencies>
@@ -83,6 +85,7 @@
     </dependencies>
 
     <build>
+        <finalName>${application.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
