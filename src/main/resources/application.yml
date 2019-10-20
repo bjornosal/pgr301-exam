@@ -4,3 +4,11 @@ togglz:
       enabled: true
     NAMING_FEATURE:
       enabled: true
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    platform: PostgreSQL
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
