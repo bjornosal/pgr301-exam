@@ -4,13 +4,14 @@ import io.restassured.RestAssured;
 import no.kristiania.pgr301.exam.dto.GeigerCounterDto;
 import no.kristiania.pgr301.exam.dto.RadiationReadingDto;
 import no.kristiania.pgr301.exam.enums.DeviceType;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -18,8 +19,8 @@ import java.util.Arrays;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
 
+@ActiveProfiles(profiles = "test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GeigerControllerTest {
