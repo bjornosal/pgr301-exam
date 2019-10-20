@@ -20,7 +20,9 @@ import java.util.List;
 @NoArgsConstructor
 public class GeigerCounter implements Serializable {
 
-  @Id @GeneratedValue private Long deviceId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long deviceId;
 
   private String name;
 

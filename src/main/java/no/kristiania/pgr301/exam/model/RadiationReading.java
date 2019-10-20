@@ -18,7 +18,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RadiationReading implements Serializable {
 
-  @Id @GeneratedValue private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
   private Double latitude;
   private Double longitude;
   private Double sievert;
