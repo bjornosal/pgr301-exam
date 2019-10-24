@@ -2,6 +2,13 @@
 <configuration>
     <!-- Use shutdownHook so that we can close gracefully and finish the log drain -->
     <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+    <property name="APP_NAME" value="${HEROKU_APP_NAME}"/>
+
+    <springProfile name="prod">
+        <property name="APP_NAME" value="${HEROKU_APP_NAME}"/>
+    </springProfile>
+
     <appender name="LOGZIO_DEBUG" class="io.logz.logback.LogzioLogbackAppender">
         <token>${LOGZ_TOKEN}</token>
         <logzioUrl>${LOGZ_URL}</logzioUrl>
@@ -12,7 +19,7 @@
         <!--REGULAR-->
         <encoder>
             <pattern>
-                %d|${SYSTEM_NAME}|${SERVICE_NAME}|%level|%logger{0}|%msg%n
+                %level|%d|${APP_NAME}|%logger{0}|%msg%n
             </pattern>
         </encoder>
     </appender>
@@ -27,7 +34,7 @@
         <!--REGULAR-->
         <encoder>
             <pattern>
-                %d|${SERVICE_NAME}|API|${SYSTEM_NAME}|%X{REQUEST_TYPE}|%X{URI_PATH}|%X{RESPONSE_CODE}|%X{EXECUTION_TIME}|%msg%n
+                %d|${APP_NAME}|API|%X{REQUEST_TYPE}|%X{URI_PATH}|%X{RESPONSE_CODE}|%X{EXECUTION_TIME}|%msg%n
             </pattern>
         </encoder>
     </appender>
@@ -42,7 +49,7 @@
         <!--REGULAR-->
         <encoder>
             <pattern>
-                %d|${SYSTEM_NAME}|${SERVICE_NAME}|%X|DB_CALL|%X{EXECUTION_TYPE}|%X{EXECUTION_TIME}|%msg%n
+                %d|${APP_NAME}|%X|DB_CALL|%X{EXECUTION_TYPE}|%X{EXECUTION_TIME}|%msg%n
             </pattern>
         </encoder>
     </appender>
@@ -51,14 +58,14 @@
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
-            <pattern>%d|${SYSTEM_NAME}|${SERVICE_NAME}|%level|%logger{0}|%msg%n</pattern>
+            <pattern>%level|%d|${APP_NAME}|%logger{0}|%msg%n</pattern>
             <!--   <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>-->
         </encoder>
     </appender>
 
 
     <root level="info">
-        <appender-ref ref="LOGZIO_REGULAR"/>
+        <appender-ref ref="LOGZIO_DEBUG"/>
         <appender-ref ref="LOGZIO_API"/>
         <appender-ref ref="LOGZIO_DB"/>
         <appender-ref ref="STDOUT"/>

@@ -5,6 +5,7 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.influx.InfluxMeterRegistry;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import no.kristiania.pgr301.exam.converter.GeigerCounterConverter;
 import no.kristiania.pgr301.exam.converter.RadiationReadingConverter;
 import no.kristiania.pgr301.exam.dto.GeigerCounterDto;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping(path = "/devices")
 public class GeigerController {
 
@@ -33,6 +35,7 @@ public class GeigerController {
   private final RadiationReadingConverter radiationReadingConverter;
   private final MeterRegistry meterRegistry;
 
+
   @Timed
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity createGeigerCounter(
@@ -41,6 +44,7 @@ public class GeigerController {
 
     GeigerCounter entity = new GeigerCounter();
     entity.setName(deviceName);
+    log.info("Logging stuff");
 
     if (deviceType != null) {
 
