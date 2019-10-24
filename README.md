@@ -26,5 +26,5 @@
 - STATUSCAKE-username
 - Statuscake-apikey
 - opsgenie
-- Logzio LOGZ_TOKEN & LOGZ_URL 
+- Logzio LOGZ_TOKEN & LOGZ_URL (Både på Travis og på Heroku?)
 
