@@ -1,5 +1,5 @@
 <!-- Use debug=true here if you want to see output from the appender itself -->
-<configuration>
+<configuration debug="true">
     <!-- Use shutdownHook so that we can close gracefully and finish the log drain -->
     <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
 
@@ -14,7 +14,7 @@
         <logzioUrl>${LOGZ_URL}</logzioUrl>
         <logzioType>myType</logzioType>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
+            <level>INFO</level>
         </filter>
         <!--REGULAR-->
         <encoder>

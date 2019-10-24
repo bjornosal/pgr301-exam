@@ -43,7 +43,10 @@ public class GeigerController {
 
     GeigerCounter entity = new GeigerCounter();
     entity.setName(deviceName);
-    log.error("Logging stuff");
+    log.trace("Logging trace");
+    log.debug("Logging debug");
+    log.info("Logging info");
+    log.error("Logging error");
 
     if (deviceType != null) {
 
