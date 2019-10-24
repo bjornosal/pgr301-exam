@@ -3,7 +3,6 @@ package no.kristiania.pgr301.exam.controller;
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.influx.InfluxMeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.kristiania.pgr301.exam.converter.GeigerCounterConverter;
@@ -44,7 +43,7 @@ public class GeigerController {
 
     GeigerCounter entity = new GeigerCounter();
     entity.setName(deviceName);
-    log.info("Logging stuff");
+    log.error("Logging stuff");
 
     if (deviceType != null) {
 
