@@ -20,7 +20,7 @@ public class GeigerCounterConverter {
     GeigerCounterDto geigerCounterDto = new GeigerCounterDto();
     geigerCounterDto.setDeviceId(geigerCounter.getDeviceId());
     geigerCounterDto.setName(geigerCounter.getName());
-    geigerCounterDto.setType(geigerCounterDto.getType());
+    geigerCounterDto.setType(geigerCounter.getType());
 
     if (geigerCounter.getRadiationReadings() != null) {
       List<RadiationReadingDto> radiationReadingDtos =

@@ -1,0 +1,66 @@
+<!-- Use debug=true here if you want to see output from the appender itself -->
+<configuration>
+    <!-- Use shutdownHook so that we can close gracefully and finish the log drain -->
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+    <appender name="LOGZIO_DEBUG" class="io.logz.logback.LogzioLogbackAppender">
+        <token>${LOGZ_TOKEN}</token>
+        <logzioUrl>${LOGZ_URL}</logzioUrl>
+        <logzioType>myType</logzioType>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <!--REGULAR-->
+        <encoder>
+            <pattern>
+                %d|${SYSTEM_NAME}|${SERVICE_NAME}|%level|%logger{0}|%msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LOGZIO_API" class="io.logz.logback.LogzioLogbackAppender">
+        <token>${LOGZ_TOKEN}</token>
+        <logzioUrl>${LOGZ_URL}</logzioUrl>
+        <logzioType>myType</logzioType>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <!--REGULAR-->
+        <encoder>
+            <pattern>
+                %d|${SERVICE_NAME}|API|${SYSTEM_NAME}|%X{REQUEST_TYPE}|%X{URI_PATH}|%X{RESPONSE_CODE}|%X{EXECUTION_TIME}|%msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LOGZIO_DB" class="io.logz.logback.LogzioLogbackAppender">
+        <token>${LOGZ_TOKEN}</token>
+        <logzioUrl>${LOGZ_URL}</logzioUrl>
+        <logzioType>myType</logzioType>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <!--REGULAR-->
+        <encoder>
+            <pattern>
+                %d|${SYSTEM_NAME}|${SERVICE_NAME}|%X|DB_CALL|%X{EXECUTION_TYPE}|%X{EXECUTION_TIME}|%msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d|${SYSTEM_NAME}|${SERVICE_NAME}|%level|%logger{0}|%msg%n</pattern>
+            <!--   <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>-->
+        </encoder>
+    </appender>
+
+
+    <root level="info">
+        <appender-ref ref="LOGZIO_REGULAR"/>
+        <appender-ref ref="LOGZIO_API"/>
+        <appender-ref ref="LOGZIO_DB"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

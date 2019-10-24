@@ -1,5 +1,9 @@
 package no.kristiania.pgr301.exam.controller;
 
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.influx.InfluxMeterRegistry;
 import lombok.RequiredArgsConstructor;
 import no.kristiania.pgr301.exam.converter.GeigerCounterConverter;
 import no.kristiania.pgr301.exam.converter.RadiationReadingConverter;
@@ -27,7 +31,9 @@ public class GeigerController {
   private final RadiationReadingRepository radiationReadingRepository;
   private final GeigerCounterConverter geigerCounterConverter;
   private final RadiationReadingConverter radiationReadingConverter;
+  private final MeterRegistry meterRegistry;
 
+  @Timed
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity createGeigerCounter(
       @RequestParam(required = false) String deviceName,
@@ -37,6 +43,7 @@ public class GeigerController {
     entity.setName(deviceName);
 
     if (deviceType != null) {
+
       boolean isDeviceType =
           Arrays.stream(DeviceType.values())
               .anyMatch(e -> e.toString().equalsIgnoreCase(deviceType));
@@ -44,6 +51,15 @@ public class GeigerController {
       if (!isDeviceType) {
         return ResponseEntity.badRequest().build();
       }
+
+      // FIXME: 24.10.2019 fix this
+      meterRegistry.counter("database.calls", "bang", "bong");
+      Counter specifiedDeviceCounter =
+              Counter.builder("database.calls")
+                      .description("indicated how many times a device has gotten a specified device type")
+                      .tag("geiger", "")
+                      .register(meterRegistry);
+      specifiedDeviceCounter.increment();
 
       entity.setType(DeviceType.valueOf(deviceType));
     }
