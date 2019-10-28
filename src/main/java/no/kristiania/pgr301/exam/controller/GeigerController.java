@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping(path = "/devices")
 public class GeigerController {
 
@@ -33,7 +33,6 @@ public class GeigerController {
   private final GeigerCounterConverter geigerCounterConverter;
   private final RadiationReadingConverter radiationReadingConverter;
   private final MeterRegistry meterRegistry;
-
 
   @Timed
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,10 +60,10 @@ public class GeigerController {
       // FIXME: 24.10.2019 fix this
       meterRegistry.counter("database.calls", "bang", "bong");
       Counter specifiedDeviceCounter =
-              Counter.builder("database.calls")
-                      .description("indicated how many times a device has gotten a specified device type")
-                      .tag("geiger", "")
-                      .register(meterRegistry);
+          Counter.builder("database.calls")
+              .description("indicated how many times a device has gotten a specified device type")
+              .tag("geiger", "")
+              .register(meterRegistry);
       specifiedDeviceCounter.increment();
 
       entity.setType(DeviceType.valueOf(deviceType));
