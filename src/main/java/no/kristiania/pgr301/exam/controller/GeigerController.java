@@ -14,6 +14,8 @@ import no.kristiania.pgr301.exam.model.GeigerCounter;
 import no.kristiania.pgr301.exam.model.RadiationReading;
 import no.kristiania.pgr301.exam.repository.GeigerCounterRepository;
 import no.kristiania.pgr301.exam.repository.RadiationReadingRepository;
+import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,9 @@ public class GeigerController {
   private final RadiationReadingConverter radiationReadingConverter;
   private final MeterRegistry meterRegistry;
 
+  @Value("#{systemEnvironment['HEROKU_APP_NAME']}")
+  private String appName;
+
   @Timed
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity createGeigerCounter(
@@ -42,6 +47,10 @@ public class GeigerController {
 
     GeigerCounter entity = new GeigerCounter();
     entity.setName(deviceName);
+    // TODO: 28.10.2019
+    //  Use MDC to get the device name.
+    MDC.put("Host", appName);
+
     log.trace("Logging trace");
     log.debug("Logging debug");
     log.info("Logging info");
