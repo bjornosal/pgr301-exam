@@ -2,6 +2,7 @@ package no.kristiania.pgr301.exam.controller;
 
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +15,6 @@ import no.kristiania.pgr301.exam.model.GeigerCounter;
 import no.kristiania.pgr301.exam.model.RadiationReading;
 import no.kristiania.pgr301.exam.repository.GeigerCounterRepository;
 import no.kristiania.pgr301.exam.repository.RadiationReadingRepository;
-import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,12 +59,10 @@ public class GeigerController {
         return ResponseEntity.badRequest().build();
       }
 
-      // FIXME: 24.10.2019 fix this
-      meterRegistry.counter("database.calls", "bang", "bong");
       Counter specifiedDeviceCounter =
           Counter.builder("database.calls")
               .description("indicated how many times a device has gotten a specified device type")
-              .tag("geiger", "")
+              .tag("device", "specifiedType")
               .register(meterRegistry);
       specifiedDeviceCounter.increment();
 
@@ -81,7 +78,18 @@ public class GeigerController {
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity getAllDevices() {
     List<GeigerCounter> geigerCounters = geigerCounterRepository.findAll();
-    return ResponseEntity.ok(geigerCounterConverter.createFromEntities(geigerCounters));
+
+    DistributionSummary distributionSummary =
+        DistributionSummary.builder("device.request.info")
+            .description("Measures the content length on the response.")
+            .tag("all.devices", "response.content.length")
+            .register(meterRegistry);
+
+    ResponseEntity response =
+        ResponseEntity.ok(geigerCounterConverter.createFromEntities(geigerCounters));
+    distributionSummary.record(response.getHeaders().getContentLength());
+
+    return response;
   }
 
   @PostMapping(value = "/{deviceId}/measurements", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -94,10 +102,16 @@ public class GeigerController {
     }
 
     Optional<GeigerCounter> geigerCounter = geigerCounterRepository.findById(deviceId);
-
     if (geigerCounter.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
+
+    Counter radiationReadings =
+        Counter.builder("database.calls")
+            .description("Indicates how many measurements has been made")
+            .tag("device", "measurements")
+            .register(meterRegistry);
+    radiationReadings.increment();
 
     RadiationReading radiationReading =
         radiationReadingConverter.createFromDto(radiationReadingDto);

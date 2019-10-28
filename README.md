@@ -6,7 +6,7 @@
 - [ ]  OpsGenie
 - [ ]  Metrics
 - [ ]  Metrics - Gauge
-- [ ]  Metrics - Counter
+- [X]  Metrics - Counter
 - [ ]  Metrics - DistributionSummary 
 - [ ]  Metrics - Timer
 - [ ]  Metrics - LongTaskTimer

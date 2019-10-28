@@ -11,7 +11,7 @@
         </filter>
     </appender>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="LOCAL" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
         </encoder>
@@ -19,6 +19,6 @@
 
     <root level="info">
         <appender-ref ref="LogzioLogbackAppender"/>
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOCAL"/>
     </root>
 </configuration>
