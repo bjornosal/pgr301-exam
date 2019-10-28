@@ -5,7 +5,7 @@
     <appender name="LogzioLogbackAppender" class="io.logz.logback.LogzioLogbackAppender">
         <token>${LOGZ_TOKEN}</token>
         <logzioUrl>${LOGZ_URL}</logzioUrl>
-        <additionalFields>"APP_NAME=$APP_NAME"</additionalFields>
+        <additionalFields>"additional_field=enKjempelangOgRarVerdi;APP_NAME=${APP_NAME}"</additionalFields>
         <logzioType>InfoLevel</logzioType>
         <addHostname>true</addHostname>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
