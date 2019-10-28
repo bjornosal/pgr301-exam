@@ -1,4 +1,3 @@
-<!-- Use debug=true here if you want to see output from the appender itself -->
 <configuration debug="true">
     <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
     <appender name="LogzioLogbackAppender" class="io.logz.logback.LogzioLogbackAppender">
@@ -12,7 +11,14 @@
         </filter>
     </appender>
 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+        </encoder>
+    </appender>
+
     <root level="info">
         <appender-ref ref="LogzioLogbackAppender"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

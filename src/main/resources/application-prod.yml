@@ -5,4 +5,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-    show-sql: true
+  autoconfigure:
+    exclude: org.springframework.boot.actuate.autoconfigure.metrics.export.influx.InfluxMetricsExportAutoConfiguration
