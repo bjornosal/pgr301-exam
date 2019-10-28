@@ -35,7 +35,7 @@ public class GeigerController {
   private final RadiationReadingConverter radiationReadingConverter;
   private final MeterRegistry meterRegistry;
 
-  @Timed
+  @Timed(value = "")
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity createGeigerCounter(
       @RequestParam(required = false) String deviceName,
@@ -75,6 +75,11 @@ public class GeigerController {
     return ResponseEntity.status(201).body(dto);
   }
 
+  @Timed(
+      value = "endpoint.devices.all",
+      description = "Measures how long time it takes to get all devices.",
+      extraTags = {"request", "time"},
+      longTask = true)
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity getAllDevices() {
     List<GeigerCounter> geigerCounters = geigerCounterRepository.findAll();
