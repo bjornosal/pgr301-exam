@@ -3,9 +3,10 @@
     <!-- Use shutdownHook so that we can close gracefully and finish the log drain -->
     <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
     <appender name="LogzioLogbackAppender" class="io.logz.logback.LogzioLogbackAppender">
-        <token>UdUNfgnqVXIubulXpAcCurebSGYIeftU</token>
-        <logzioUrl>https://listener-nl.logz.io:8071</logzioUrl>
-        <logzioType>myType</logzioType>
+        <token>${LOGZ_TOKEN}</token>
+        <logzioUrl>${LOGZ_URL}</logzioUrl>
+        <additionalFields>"APP_NAME=$APP_NAME"</additionalFields>
+        <logzioType>InfoLevel</logzioType>
         <addHostname>true</addHostname>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
