@@ -13,7 +13,7 @@
 - [ ]  Mer Metrics --
 - [ ]  Logz.io
 - [x]  Trenger jeg å ha postgres i terraform filen?
-- [ ] Logz.io Si hvilken app som logger
+- [X] Logz.io Si hvilken app som logger
 - [ ] cache busting long task timer?
 - [ ] give uuid ids to timers
 
@@ -27,4 +27,7 @@
 - Statuscake-apikey
 - opsgenie
 - Logzio LOGZ_TOKEN & LOGZ_URL (Både på Travis og på Heroku?)
+    - Hva skjer om jeg ikke har det på Travis?
+- Heroku logzio, sett via terraform.
+- OPSGENIE api key on terraform
 

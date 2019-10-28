@@ -1,6 +1,5 @@
 <!-- Use debug=true here if you want to see output from the appender itself -->
 <configuration debug="true">
-    <!-- Use shutdownHook so that we can close gracefully and finish the log drain -->
     <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
     <appender name="LogzioLogbackAppender" class="io.logz.logback.LogzioLogbackAppender">
         <token>${LOGZ_TOKEN}</token>
@@ -14,7 +13,6 @@
     </appender>
 
     <root level="info">
-        <!-- IMPORTANT: make sure to include this line, otherwise the appender won't be used -->
         <appender-ref ref="LogzioLogbackAppender"/>
     </root>
 </configuration>
