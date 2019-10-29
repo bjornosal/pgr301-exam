@@ -47,14 +47,11 @@ public class GeigerController {
   public ResponseEntity createGeigerCounter(
       @RequestParam(required = false) String deviceName,
       @RequestParam(required = false) String deviceType) {
+    log.info(
+        "Creating device with values [deviceName: {}, deviceType: {}]", deviceName, deviceType);
 
     GeigerCounter entity = new GeigerCounter();
     entity.setName(deviceName);
-
-    log.trace("Logging trace");
-    log.debug("Logging debug");
-    log.info("Logging info");
-    log.error("Logging error");
 
     if (deviceType != null) {
 
@@ -129,11 +126,13 @@ public class GeigerController {
             .register(meterRegistry);
 
     if (deviceId == null) {
+      log.warn("deviceId was null");
       return ResponseEntity.notFound().build();
     }
 
     Optional<GeigerCounter> geigerCounter = geigerCounterRepository.findById(deviceId);
     if (geigerCounter.isEmpty()) {
+      log.info("Found no device for deviceId: {}", deviceId);
       return ResponseEntity.notFound().build();
     }
 
@@ -154,6 +153,7 @@ public class GeigerController {
     Optional<GeigerCounter> geigerCounter = geigerCounterRepository.findById(deviceId);
 
     if (geigerCounter.isEmpty()) {
+      log.info("Could not find any measurements for device with id: {}", deviceId);
       return ResponseEntity.notFound().build();
     }
 

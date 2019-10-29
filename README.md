@@ -4,12 +4,12 @@
 - [ ]  Fjern alle forekomster av navnet mitt
 - [X]  StatusCake - Litt ihvertfall
 - [ ]  OpsGenie
-- [ ]  Metrics
-- [ ]  Metrics - Gauge
+- [X]  Metrics
+- [X]  Metrics - Gauge
 - [X]  Metrics - Counter
-- [ ]  Metrics - DistributionSummary 
-- [ ]  Metrics - Timer
-- [ ]  Metrics - LongTaskTimer
+- [X]  Metrics - DistributionSummary 
+- [X]  Metrics - Timer
+- [X]  Metrics - LongTaskTimer
 - [ ]  Mer Metrics --
 - [ ]  Logz.io
 - [x]  Trenger jeg å ha postgres i terraform filen?
