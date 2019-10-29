@@ -103,7 +103,6 @@
             <artifactId>logzio-logback-appender</artifactId>
             <version>${logzio.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>

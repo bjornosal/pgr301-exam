@@ -1,8 +1,10 @@
 package no.kristiania.pgr301.exam.controller;
 
+import io.micrometer.core.annotation.Counted;
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +19,10 @@ import no.kristiania.pgr301.exam.repository.GeigerCounterRepository;
 import no.kristiania.pgr301.exam.repository.RadiationReadingRepository;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.SerializationUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +39,11 @@ public class GeigerController {
   private final RadiationReadingConverter radiationReadingConverter;
   private final MeterRegistry meterRegistry;
 
-  @Timed(value = "")
+  @Timed(
+      value = "this.one",
+      extraTags = {"test", "value"})
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  @Counted(value = "request.count.devices.create")
   public ResponseEntity createGeigerCounter(
       @RequestParam(required = false) String deviceName,
       @RequestParam(required = false) String deviceType) {
@@ -62,7 +69,7 @@ public class GeigerController {
       Counter specifiedDeviceCounter =
           Counter.builder("database.calls")
               .description("indicated how many times a device has gotten a specified device type")
-              .tag("device", "specifiedType")
+              .tag("device", "type")
               .register(meterRegistry);
       specifiedDeviceCounter.increment();
 
@@ -76,23 +83,36 @@ public class GeigerController {
   }
 
   @Timed(
-      value = "endpoint.devices.all",
-      description = "Measures how long time it takes to get all devices.",
-      extraTags = {"request", "time"},
-      longTask = true)
+      value = "request.time",
+      extraTags = {"devices", "all"})
+  @Counted(value = "request.count.devices.all")
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity getAllDevices() {
-    List<GeigerCounter> geigerCounters = geigerCounterRepository.findAll();
-
     DistributionSummary distributionSummary =
         DistributionSummary.builder("device.request.info")
-            .description("Measures the content length on the response.")
-            .tag("all.devices", "response.content.length")
+            .description("Measures the byte size of the response.")
+            .tag("response", "byte-size")
             .register(meterRegistry);
+
+    List<GeigerCounter> geigerCounters = geigerCounterRepository.findAll();
+    Gauge.builder("devices.current.amount", geigerCounters, List::size).register(meterRegistry);
 
     ResponseEntity response =
         ResponseEntity.ok(geigerCounterConverter.createFromEntities(geigerCounters));
-    distributionSummary.record(response.getHeaders().getContentLength());
+    try {
+      Thread.sleep(5000);
+      log.info("Sleeping thread to fake a long task.");
+    } catch (InterruptedException e) {
+      log.error("Issues sleeping thread", e);
+    }
+
+    if (response.getBody() instanceof Serializable) {
+      byte[] responseInBytes = SerializationUtils.serialize(response.getBody());
+
+      if (responseInBytes != null) {
+        distributionSummary.record(responseInBytes.length);
+      }
+    }
 
     return response;
   }
@@ -101,6 +121,12 @@ public class GeigerController {
   public ResponseEntity addRadiationReading(
       @PathVariable("deviceId") Long deviceId,
       @RequestBody RadiationReadingDto radiationReadingDto) {
+
+    Counter radiationReadings =
+        Counter.builder("database.calls")
+            .description("Indicates how many measurements has been made")
+            .tag("device", "measurements")
+            .register(meterRegistry);
 
     if (deviceId == null) {
       return ResponseEntity.notFound().build();
@@ -111,11 +137,6 @@ public class GeigerController {
       return ResponseEntity.notFound().build();
     }
 
-    Counter radiationReadings =
-        Counter.builder("database.calls")
-            .description("Indicates how many measurements has been made")
-            .tag("device", "measurements")
-            .register(meterRegistry);
     radiationReadings.increment();
 
     RadiationReading radiationReading =
