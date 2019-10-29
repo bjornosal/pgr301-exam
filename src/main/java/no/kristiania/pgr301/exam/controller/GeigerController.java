@@ -40,8 +40,8 @@ public class GeigerController {
   private final MeterRegistry meterRegistry;
 
   @Timed(
-      value = "this.one",
-      extraTags = {"test", "value"})
+      value = "request.time",
+      extraTags = {"devices", "create"})
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @Counted(value = "request.count.devices.create")
   public ResponseEntity createGeigerCounter(
@@ -81,7 +81,8 @@ public class GeigerController {
 
   @Timed(
       value = "request.time",
-      extraTags = {"devices", "all"})
+      extraTags = {"devices", "all"},
+      longTask = true)
   @Counted(value = "request.count.devices.all")
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity getAllDevices() {
