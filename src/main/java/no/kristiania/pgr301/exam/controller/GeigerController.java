@@ -58,7 +58,7 @@ public class GeigerController {
               .anyMatch(device -> device.toString().equalsIgnoreCase(deviceType));
 
       if (!isDeviceType) {
-        log.info("Attempted creating device with unknown device type: {}", deviceType);
+        log.warn("Attempted creating device with unknown device type: {}", deviceType);
         return ResponseEntity.badRequest().build();
       }
 
