@@ -1,8 +1,8 @@
 package no.kristiania.pgr301.exam.repository;
 
 import no.kristiania.pgr301.exam.model.RadiationReading;
-import org.springframework.data.jpa.repository.JpaRepository;
+import no.kristiania.pgr301.exam.repository.parent.RepositoryParent;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RadiationReadingRepository extends JpaRepository<RadiationReading, Long> {}
+public interface RadiationReadingRepository extends RepositoryParent<RadiationReading, Long> {}

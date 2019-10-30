@@ -47,8 +47,6 @@ public class GeigerController {
   public ResponseEntity createGeigerCounter(
       @RequestParam(required = false) String deviceName,
       @RequestParam(required = false) String deviceType) {
-    log.info(
-        "Creating device with values [deviceName: {}, deviceType: {}]", deviceName, deviceType);
 
     GeigerCounter entity = new GeigerCounter();
     entity.setName(deviceName);
@@ -57,9 +55,10 @@ public class GeigerController {
 
       boolean isDeviceType =
           Arrays.stream(DeviceType.values())
-              .anyMatch(e -> e.toString().equalsIgnoreCase(deviceType));
+              .anyMatch(device -> device.toString().equalsIgnoreCase(deviceType));
 
       if (!isDeviceType) {
+        log.info("Attempted creating device with unknown device type: {}", deviceType);
         return ResponseEntity.badRequest().build();
       }
 
